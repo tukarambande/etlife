@@ -1,0 +1,95 @@
+USP_GET_GLMS_REPORTS;
+
+--SELECT  RTRIM(XMLAGG(XMLELEMENT(E,PROD_INFO_RM_ID || ',')).EXTRACT ('//text()'),',')  INTO VAR_RM_ID 
+--            FROM  (SELECT DISTINCT  PROD_INFO_RM_ID   
+--                     FROM GLMS_PRODUCT_INFO_DETAILS 
+--                  ) RM_DATA;
+
+---- it will return unique combination of records
+--SELECT DISTINCT PROD_INFO_RM_ID , PROD_INFO_PRODUCT_ID FROM GLMS_PRODUCT_INFO_DETAILS;
+--
+--SELECT DISTINCT  PROD_INFO_RM_ID FROM GLMS_PRODUCT_INFO_DETAILS;
+--
+--SELECT DISTINCT  PROD_INFO_PRODUCT_ID FROM GLMS_PRODUCT_INFO_DETAILS;
+
+---- final report details are stored in it.
+--select * from GLMS_REPORTS_DETAILS;
+
+SELECT * FROM GLMS_CLIENT_INTRODUCTION;
+SELECT * FROM GLMS_PRODUCT_INFO_DETAILS;
+---------------------------------------------------------------------------------------------------------
+SELECT PROD_INFO_CLIENT_CODE,PROD_INFO_PRODUCT_ID,PROD_INFO_CREATED_DATE
+         FROM GLMS_PRODUCT_INFO_DETAILS CP
+              LEFT JOIN  GLMS_CLIENT_INTRODUCTION CI  ON(CP.PROD_INFO_CLIENT_CODE = CI.CLI_INTRO_CLIENT_CODE
+                          AND CP.PROD_INFO_PRODUCT_ID = CI.CLI_INTRO_PROD_ID
+                          AND CI.CLI_INTRO_STATUS = 'Active')
+        WHERE PROD_INFO_CREATED_DATE BETWEEN '14-02-17' AND '16-02-17'
+              AND (CLI_INTRO_ID IS NULL OR CI.CLI_INTRO_STATUS ='Active');
+              --AND CP.PROD_INFO_RM_ID IN (SELECT COLUMN_VALUE 
+                                      --FROM TABLE (FN_STR2TBL(VAR_RM_ID,',')));
+
+--fetching all the distinct client code and product id of all the clients with active introduction status exists with the date range given.
+---------------------------------------------------------------------------------------------------------
+-- fetches all the RM ids.
+SELECT DISTINCT  PROD_INFO_RM_ID FROM GLMS_PRODUCT_INFO_DETAILS;
+---------------------------------------------------------------------------------------------------------
+---- it returns zero glms product rides
+--SELECT COUNT(1) FROM GLMS_PRODUCT_RIDER 
+--              WHERE RID_PROD_CLIENT_CODE =  'G111140356'
+--                    AND RID_PROD_PRODUCT_ID = 'GTL_EMP';
+--
+--select * from glms_product_rider;
+---------------------------------------------------------------------------------------------------------
+---- It returns zero glms product options
+--SELECT COUNT(1) FROM GLMS_PRODUCT_OPTION 
+--              WHERE OPTN_PROD_CLIENT_CODE =  'G111140356'
+--                    AND OPTN_PROD_PRODUCT_ID = 'GTL_EMP';
+--
+--select OPTN_DESC from GLMS_PRODUCT_OPTION;
+---------------------------------------------------------------------------------------------------------
+---- It returns zero glms product portfolio count
+--SELECT COUNT(1) FROM GLMS_PRODUCT_PORTFOLIO 
+--              WHERE PORTF_PROD_CLIENT_ID = 'G111140356'
+--              AND PORTF_PROD_PRODUCT_ID = 'GTL_EMP';
+--
+--SELECT PORTF_PROD_INSUR_FUND_BUSS,PORTF_PROD_PORTFOLIO_AMT FROM GLMS_PRODUCT_PORTFOLIO ;
+---------------------------------------------------------------------------------------------------------
+---- zero count
+--SELECT COUNT(1) FROM GLMS_INTRO_RIDER 
+--               WHERE RID_INTRO_CLIENT_CODE =  'G111140356'
+--                     AND RID_INTRO_PRODUCT_ID = 'GTL_EMP'
+--                     AND RID_INTRO_STATUS = 'Active';
+--
+--SELECT RID_INTRO_RIDER_ID FROM GLMS_INTRO_RIDER ;
+---------------------------------------------------------------------------------------------------------
+--SELECT COUNT(1) FROM GLMS_INTRO_OPTION
+--               WHERE OPTN_INTRO_CLIENT_CODE =  'G111140356'
+--                     AND OPTN_INTRO_PRODUCT_ID = 'GTL_EMP'
+--                     AND OPTN_STATUS = 'Active';
+--                   
+--SELECT OPTN_INTRO_DESC  FROM GLMS_INTRO_OPTION;
+---------------------------------------------------------------------------------------------------------
+--SELECT RID_QUOTE_RIDER_ID FROM GLMS_QUOTE_RIDER --;
+--               WHERE RID_QUOTE_CLIENT_CODE =  'G111140356'
+--                     AND RID_QUOTE_PRODUCT_ID = 'GTL_EMP'
+--                     AND RID_QUOTE_STATUS = 'Active';
+---------------------------------------------------------------------------------------------------------
+SELECT  *  FROM GLMS_QUOTE_SUBMISSION ;
+
+select * from GLMS_QUOTE_SUBMISSION 
+WHERE QUOT_CLIENT_CODE = 'G111140356' 
+AND QUOT_PROD_ID = 'GTL_EMP' 
+AND QUOT_STATUS = 'Active';
+
+SELECT  * FROM GLMS_FOLLOW_UP 
+WHERE FOLL_UP_CLIENT_CODE = 'G111140356' 
+AND FOLL_UP_PROD_ID =  'GTL_EMP'  
+AND FOLL_UP_STATUS = 'Active';
+
+
+SELECT *  FROM GLMS_ACQRD_PROVIDER_FUND_AMT;
+
+SELECT table_name
+  FROM user_tab_columns 
+  WHERE UPPER(column_name) = UPPER('QUOT_NO_OF_INSRD_MEM');
+
