@@ -1,3 +1,4 @@
+-- added one line here in the third text file.
 USP_GET_GLMS_REPORTS;
 
 --SELECT  RTRIM(XMLAGG(XMLELEMENT(E,PROD_INFO_RM_ID || ',')).EXTRACT ('//text()'),',')  INTO VAR_RM_ID 
